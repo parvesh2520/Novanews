@@ -39,51 +39,46 @@
 
 @layer base {
   :root {
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.4);
-    --premium-indigo: #4F46E5;
-    --premium-violet: #7C3AED;
-    --premium-slate: #0F172A;
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --premium-indigo: #6366F1;
+    --neutral-slate: #1E293B;
+    --canvas-bg: #F9FAFB;
   }
 
   body {
-    @apply text-slate-900 antialiased selection:bg-indigo-100 selection:text-indigo-900;
+    @apply text-slate-800 antialiased selection:bg-slate-200 selection:text-slate-900;
     font-family: 'Inter', sans-serif;
-    background-color: #F8FAFC;
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(124, 58, 237, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(79, 70, 229, 0.05) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, rgba(124, 58, 237, 0.05) 0px, transparent 50%);
+    background-color: var(--canvas-bg);
+    background-image: none;
     background-attachment: fixed;
   }
 
-  h1, h2, h3, h4, font-outfit {
-    font-family: 'Outfit', sans-serif;
+  h1, h2, h3, h4, .font-outfit {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.025em;
   }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/40;
+    @apply bg-white/60 backdrop-blur-md border border-black/5;
   }
   
   .glass-dark {
-    @apply bg-slate-900/80 backdrop-blur-2xl border border-slate-700/30;
+    @apply bg-slate-900/90 backdrop-blur-md border border-white/5;
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600;
+    @apply text-slate-900;
   }
 
   .shadow-premium {
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05), 
-                0 4px 10px -5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
   }
 
   .shadow-premium-hover {
-    box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.15), 
-                0 8px 20px -10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
   }
 }
 

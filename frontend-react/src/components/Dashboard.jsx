@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [summarizingUrls, setSummarizingUrls] = useState(new Set());
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   // Initial fetch of saved articles to sync bookmarks
@@ -243,8 +244,44 @@ export default function Dashboard() {
             <button className="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-gray-900 hover:shadow-sm transition-all focus:outline-none">
               <i className="fa-regular fa-bell"></i>
             </button>
-            <div className="w-9 h-9 rounded-full overflow-hidden border border-gray-200 ring-2 ring-white cursor-pointer hover:ring-indigo-100 transition-all">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1528&auto=format&fit=crop" alt="Profile" className="w-full h-full object-cover" />
+            
+            {/* Profile Dropdown Container */}
+            <div className="relative">
+              <div 
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                className="w-9 h-9 rounded-full overflow-hidden border border-gray-200 ring-2 ring-white cursor-pointer hover:ring-indigo-100 transition-all active:scale-95"
+              >
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1528&auto=format&fit=crop" alt="Profile" className="w-full h-full object-cover" />
+              </div>
+
+              {/* Profile Menu Dropdown */}
+              {isProfileMenuOpen && (
+                <>
+                  <div className="fixed inset-0 z-20" onClick={() => setIsProfileMenuOpen(false)}></div>
+                  <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-30 animate-scale-in">
+                    <div className="px-4 py-2 border-b border-gray-50 mb-1">
+                       <p className="text-[13px] font-bold text-gray-900">Parvesh Kumar</p>
+                       <p className="text-[11px] text-gray-500 truncate">parvesh2520@gmail.com</p>
+                    </div>
+                    <button className="w-full text-left px-4 py-2 text-[13px] text-gray-600 hover:bg-gray-50 hover:text-indigo-600 transition-colors flex items-center gap-3 font-medium">
+                       <i className="fa-regular fa-user text-[14px]"></i>
+                       My Profile
+                    </button>
+                    <button className="w-full text-left px-4 py-2 text-[13px] text-gray-600 hover:bg-gray-50 hover:text-indigo-600 transition-colors flex items-center gap-3 font-medium">
+                       <i className="fa-regular fa-gear text-[14px]"></i>
+                       Settings
+                    </button>
+                    <div className="h-px bg-gray-50 my-1"></div>
+                    <button 
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-[13px] text-red-500 hover:bg-red-50 transition-colors flex items-center gap-3 font-semibold"
+                    >
+                       <i className="fa-solid fa-right-from-bracket text-[14px]"></i>
+                       Sign Out
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </header>

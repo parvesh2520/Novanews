@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
 
 export default function Dashboard() {
   const [articles, setArticles] = useState([]);
@@ -174,45 +181,49 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans flex">
       {/* Sidebar Navigation */}
-      <aside className="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200/60 hidden md:flex flex-col z-20">
-        <div className="h-16 flex items-center px-6 border-b border-gray-100">
-          <div className="w-8 h-8 bg-gradient-to-br from-gray-900 to-black rounded-lg flex items-center justify-center mr-3 shadow-sm ring-2 ring-gray-900/5">
-            <span className="text-white font-bold text-sm tracking-tighter">N</span>
-          </div>
-          <span className="text-[17px] font-bold text-gray-900 tracking-tight">NovaNews</span>
+      <aside className="fixed inset-y-0 left-0 w-64 glass border-r border-white/20 hidden md:flex flex-col z-20 shadow-xl">
+        <div className="h-20 flex items-center px-8 border-b border-gray-100/50">
+          <motion.div 
+            initial={{ rotate: -10, scale: 0.9 }}
+            animate={{ rotate: 0, scale: 1 }}
+            className="w-9 h-9 bg-slate-950 rounded-xl flex items-center justify-center mr-3 shadow-lg ring-4 ring-indigo-500/10"
+          >
+            <span className="text-white font-black text-base tracking-tighter">N</span>
+          </motion.div>
+          <span className="text-[19px] font-extrabold text-slate-900 tracking-tight font-outfit">NovaNews</span>
         </div>
         
-        <div className="flex-1 overflow-y-auto py-6 px-4">
-          <nav className="flex flex-col gap-1">
-            <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2 px-2">Discover</div>
-            <NavItem icon="fa-solid fa-house" label="Home" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-fire" label="Top Stories" active={selectedCategory === 'top'} onClick={() => { setSelectedCategory('top'); setSearchQuery(''); }} />
+        <div className="flex-1 overflow-y-auto py-8 px-5">
+          <nav className="flex flex-col gap-1.5">
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-3 px-3">Discover</div>
+            <NavItem icon="fa-solid fa-house-chimney" label="Home" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-bolt-lightning" label="Top Stories" active={selectedCategory === 'top'} onClick={() => { setSelectedCategory('top'); setSearchQuery(''); }} />
             <NavItem icon="fa-solid fa-bookmark" label="Saved" active={selectedCategory === 'saved'} onClick={() => { setSelectedCategory('saved'); setSearchQuery(''); }} />
             
-            <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-6 px-2">Categories</div>
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-3 mt-8 px-3">Categories</div>
             <NavItem icon="fa-solid fa-microchip" label="Technology" active={selectedCategory === 'technology'} onClick={() => { setSelectedCategory('technology'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-chart-line" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-flask" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-running" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-film" label="Entertainment" active={selectedCategory === 'entertainment'} onClick={() => { setSelectedCategory('entertainment'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-chart-pie" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-vial-virus" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-medal" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-clapperboard" label="Entertainment" active={selectedCategory === 'entertainment'} onClick={() => { setSelectedCategory('entertainment'); setSearchQuery(''); }} />
           </nav>
         </div>
 
-        <div className="p-4 border-t border-gray-100">
-          <button onClick={handleLogout} className="flex items-center w-full gap-3 px-3 py-2 text-[13px] font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors group">
-            <i className="fa-solid fa-arrow-right-from-bracket text-gray-400 group-hover:text-gray-600"></i>
+        <div className="p-6 border-t border-gray-100/50">
+          <button onClick={handleLogout} className="flex items-center w-full gap-3 px-4 py-3 text-[13px] font-semibold text-slate-500 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all group">
+            <i className="fa-solid fa-power-off text-slate-400 group-hover:text-red-500 transition-colors"></i>
             Sign out
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 md:ml-64 flex flex-col min-h-screen">
+      <main className="flex-1 md:ml-64 flex flex-col min-h-screen relative z-10">
         {/* Header */}
-        <header className="h-16 sticky top-0 z-10 bg-white/80 backdrop-blur-xl border-b border-gray-200/60 px-6 flex items-center justify-between">
+        <header className="h-20 sticky top-0 z-30 glass border-b border-white/20 px-8 flex items-center justify-between shadow-sm">
           <div className="md:hidden flex items-center">
-            <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-white font-bold text-sm">N</span>
+            <div className="w-9 h-9 bg-slate-950 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+              <span className="text-white font-bold text-base">N</span>
             </div>
           </div>
 
@@ -305,171 +316,304 @@ export default function Dashboard() {
 
         {/* Dashboard Content */}
         <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 tracking-tight mb-1">
-                {searchQuery ? `Search Results for "${searchQuery}"` : (selectedCategory === 'general' ? 'Good Morning' : (selectedCategory === 'saved' ? 'Saved Articles' : `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} News`))}
-              </h1>
-              <p className="text-[14px] text-gray-500">
-                {selectedCategory === 'saved' ? 'Your personally curated collection of stories.' : (isMockData ? 'Currently viewing layout mock data (News API not configured).' : 'Here are the top stories tailored for you today.')}
-              </p>
-            </div>
-            <div className="hidden sm:flex bg-white border border-gray-200 rounded-lg p-1 shadow-sm">
-              <button className="px-3 py-1.5 text-[12px] font-medium rounded-md bg-gray-100 text-gray-900">Latest</button>
-              <button className="px-3 py-1.5 text-[12px] font-medium rounded-md text-gray-500 hover:text-gray-900">Trending</button>
-            </div>
+          {/* Hero Featured Story */}
+          <AnimatePresence mode="wait">
+            {!isLoading && articles.length > 0 && selectedCategory === 'general' && !searchQuery && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="mb-12"
+              >
+                <div className="group relative w-full h-[450px] rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/30">
+                  <img src={articles[0].urlToImage} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Featured" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent"></div>
+                  
+                  <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full md:w-3/4">
+                    <motion.span 
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="inline-block px-4 py-1.5 rounded-full bg-indigo-500 text-white text-[12px] font-bold tracking-widest uppercase mb-6"
+                    >
+                      Featured Story
+                    </motion.span>
+                    <motion.h1 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-3xl md:text-5xl font-black text-white mb-6 leading-[1.1] font-outfit"
+                    >
+                      {articles[0].title}
+                    </motion.h1>
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                      className="flex items-center gap-6"
+                    >
+                      <a href={articles[0].url} target="_blank" rel="noreferrer" className="px-8 py-4 bg-white text-slate-950 rounded-2xl font-bold text-[15px] hover:bg-slate-100 transition-all hover:-translate-y-1 shadow-lg">
+                        Read Story
+                      </a>
+                      <button 
+                        onClick={(e) => handleSummarize(e, articles[0])}
+                        className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all flex items-center gap-3"
+                      >
+                         <i className="fa-solid fa-sparkles text-indigo-400"></i>
+                         <span className="font-bold text-[15px]">AI Insight</span>
+                      </button>
+                    </motion.div>
+                  </div>
+                </div>
+                
+                {/* Hero AI Summary Overlay */}
+                {summaries[articles[0].url] && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="mt-6 p-8 glass rounded-[2rem] border-indigo-500/20 shadow-indigo-500/5"
+                  >
+                    <p className="text-[17px] font-semibold text-slate-900 leading-relaxed font-outfit italic">
+                      <i className="fa-solid fa-quote-left text-indigo-500/30 text-3xl absolute -left-2 -top-2"></i>
+                      {summaries[articles[0].url]}
+                    </p>
+                  </motion.div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Grid Layout Filter Bar */}
+          <div className="flex items-center justify-between mb-10">
+             <div className="flex items-center gap-3">
+                <div className="w-1.5 h-8 bg-indigo-500 rounded-full"></div>
+                <h2 className="text-2xl font-black text-slate-900 font-outfit">
+                   {selectedCategory === 'saved' ? 'Your Anthology' : 'Trending Now'}
+                </h2>
+             </div>
+             <div className="flex bg-white/50 p-1.5 rounded-2xl border border-gray-200/50 shadow-sm">
+                <button className="px-5 py-2 text-[12px] font-bold rounded-xl bg-slate-900 text-white shadow-lg">Grid</button>
+                <button className="px-5 py-2 text-[12px] font-bold rounded-xl text-slate-500 hover:text-slate-900 transition-colors">List</button>
+             </div>
           </div>
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
-              <i className="fa-solid fa-circle-exclamation"></i>
-              {error}
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <motion.div 
+             layout
+             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10"
+          >
             {isLoading ? (
-              // Loading Skeletons
-              Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="flex flex-col gap-3">
-                  <div className="w-full h-48 bg-gray-200 rounded-xl animate-pulse"></div>
-                  <div className="flex gap-2">
-                    <div className="w-16 h-5 bg-gray-200 rounded-full animate-pulse"></div>
-                    <div className="w-24 h-5 bg-gray-200 rounded-full animate-pulse"></div>
+              // Enhanced Skeletons
+              Array.from({ length: 9 }).map((_, i) => (
+                <div key={i} className="flex flex-col gap-6 scale-[0.98]">
+                  <div className="w-full h-64 bg-slate-200/60 rounded-[2rem] animate-pulse"></div>
+                  <div className="space-y-3">
+                    <div className="w-20 h-6 bg-slate-200/60 rounded-full animate-pulse"></div>
+                    <div className="w-full h-8 bg-slate-200/60 rounded-xl animate-pulse"></div>
+                    <div className="w-3/4 h-8 bg-slate-200/60 rounded-xl animate-pulse"></div>
                   </div>
-                  <div className="w-full h-5 bg-gray-200 rounded-md animate-pulse"></div>
-                  <div className="w-3/4 h-5 bg-gray-200 rounded-md animate-pulse"></div>
                 </div>
               ))
             ) : (
-              // News Cards
-              articles.map(article => (
-                <a href={article.url} target="_blank" rel="noopener noreferrer" key={article.id} className="group cursor-pointer flex flex-col h-full">
-                  <div className="w-full h-48 rounded-xl overflow-hidden mb-4 relative shadow-sm border border-gray-100/50">
-                    <img 
-                      src={article.urlToImage} 
-                      alt={article.title} 
-                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    
-                    {/* Bookmark Button */}
-                    <button 
-                      onClick={(e) => toggleSaveArticle(e, article)}
-                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-gray-700 hover:text-indigo-600 hover:bg-white transition-all shadow-sm z-20"
-                    >
-                      <i className={savedUrls.has(article.url) ? "fa-solid fa-bookmark text-indigo-600" : "fa-regular fa-bookmark"}></i>
-                    </button>
-                  </div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 text-[11px] font-semibold tracking-wide uppercase">
-                      {article.category || 'News'}
-                    </span>
-                    <span className="text-[12px] text-gray-400 flex items-center gap-1">
-                      <i className="fa-regular fa-clock text-[10px]"></i>
-                      {article.publishedAt}
-                    </span>
-                  </div>
-                  <h2 className="text-[16px] font-bold text-gray-900 leading-snug mb-2 group-hover:text-indigo-600 transition-colors line-clamp-3">
-                    {article.title}
-                  </h2>
-                  <p className="text-[14px] text-gray-600 line-clamp-2 mb-4 leading-relaxed">
-                    {article.description}
-                  </p>
-                  
-                  {/* AI Summary Section */}
-                  {summarizingUrls.has(article.url) ? (
-                    <div className="mb-4 p-3 bg-indigo-50/50 rounded-lg border border-indigo-100 animate-pulse flex items-center gap-2">
-                       <i className="fa-solid fa-sparkles text-indigo-500 animate-spin text-[12px]"></i>
-                       <span className="text-[12px] font-medium text-indigo-700">AI is thinking...</span>
-                    </div>
-                  ) : summaries[article.url] ? (
-                    <div className="mb-4 p-3 bg-indigo-50/50 rounded-lg border border-indigo-200 relative group/summary">
-                       <p className="text-[12.5px] font-medium leading-relaxed text-indigo-900">
-                         <i className="fa-solid fa-sparkles text-indigo-500 mr-2"></i>
-                         {summaries[article.url]}
-                       </p>
-                    </div>
-                  ) : (
-                    <button 
-                      onClick={(e) => handleSummarize(e, article)}
-                      className="mb-4 self-start px-3 py-1.5 rounded-full bg-white border border-indigo-100 hover:bg-indigo-50 hover:border-indigo-200 transition-all flex items-center gap-2 text-[12px] font-semibold text-indigo-600 shadow-sm"
-                    >
-                      <i className="fa-solid fa-sparkles text-[10px]"></i>
-                      AI Summary
-                    </button>
-                  )}
-
-                  <div className="flex items-center gap-2 mt-auto pt-4 border-t border-gray-100">
-                    <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600 shrink-0">
-                      {(article.author && article.author[0] !== 'h') ? article.author.charAt(0).toUpperCase() : 'N'}
-                    </div>
-                    <span className="text-[13px] font-medium text-gray-700 truncate">{article.author}</span>
-                    <span className="text-gray-300 text-[10px]">•</span>
-                    <span className="text-[13px] text-gray-500 truncate">{article.source}</span>
-                  </div>
-                </a>
-              ))
+              // Premium News Cards
+              <AnimatePresence>
+                {articles.map((article, index) => (
+                  <NewsCard 
+                    key={article.url} 
+                    article={article} 
+                    index={index}
+                    savedUrls={savedUrls}
+                    toggleSaveArticle={toggleSaveArticle}
+                    summaries={summaries}
+                    summarizingUrls={summarizingUrls}
+                    handleSummarize={handleSummarize}
+                  />
+                ))}
+              </AnimatePresence>
             )}
-          </div>
+          </motion.div>
         </div>
       </main>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-200 px-6 py-2 pb-6 flex justify-between items-center z-40">
-        <MobileNavItem icon="fa-solid fa-house" label="Home" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
+      <nav className="md:hidden fixed bottom-6 left-6 right-6 glass-dark rounded-[2rem] px-8 py-4 flex justify-between items-center z-50 shadow-2xl border-white/10 ring-1 ring-white/20">
+        <MobileNavItem icon="fa-solid fa-house-chimney" label="Home" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
         <MobileNavItem icon="fa-solid fa-bookmark" label="Saved" active={selectedCategory === 'saved'} onClick={() => { setSelectedCategory('saved'); setSearchQuery(''); }} />
-        <MobileNavItem icon="fa-solid fa-search" label="Search" active={isMobileSearchOpen} onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)} />
-        <MobileNavItem icon="fa-solid fa-grid-2" label="Topics" active={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+        <MobileNavItem icon="fa-solid fa-magnifying-glass" label="Search" active={isMobileSearchOpen} onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)} />
+        <MobileNavItem icon="fa-solid fa-ellipsis" label="More" active={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
       </nav>
 
-      {/* Mobile Side Menu/Drawer (Simplified Overlay) */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 flex justify-end">
-           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setIsMobileMenuOpen(false)}></div>
-           <div className="relative w-80 max-w-xs h-full bg-white shadow-2xl flex flex-col p-6 animate-slide-left">
-              <div className="flex items-center justify-between mb-8">
-                 <span className="text-xl font-bold text-gray-900 tracking-tight">Topics</span>
-                 <button onClick={() => setIsMobileMenuOpen(false)} className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-500">
-                    <i className="fa-solid fa-xmark"></i>
-                 </button>
-              </div>
-              <nav className="flex flex-col gap-2 overflow-y-auto">
-                 <NavItem icon="fa-solid fa-microchip" label="Technology" active={selectedCategory === 'technology'} onClick={() => { setSelectedCategory('technology'); setIsMobileMenuOpen(false); }} />
-                 <NavItem icon="fa-solid fa-chart-line" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setIsMobileMenuOpen(false); }} />
-                 <NavItem icon="fa-solid fa-flask" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setIsMobileMenuOpen(false); }} />
-                 <NavItem icon="fa-solid fa-running" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setIsMobileMenuOpen(false); }} />
-                 <NavItem icon="fa-solid fa-film" label="Entertainment" active={selectedCategory === 'entertainment'} onClick={() => { setSelectedCategory('entertainment'); setIsMobileMenuOpen(false); }} />
-                 <div className="h-px bg-gray-100 my-4"></div>
-                 <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-3 text-[14px] font-semibold text-red-500 rounded-lg hover:bg-red-50">
-                    <i className="fa-solid fa-right-from-bracket"></i>
-                    Sign out
-                 </button>
-              </nav>
-           </div>
-        </div>
-      )}
+      {/* Mobile Side Menu/Drawer (Enhanced) */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <div className="md:hidden fixed inset-0 z-[60] flex justify-end">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm" 
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="relative w-80 h-full bg-white shadow-2xl flex flex-col p-10"
+            >
+                <div className="flex items-center justify-between mb-12">
+                  <span className="text-2xl font-black text-slate-900 tracking-tight font-outfit">Topics</span>
+                  <button onClick={() => setIsMobileMenuOpen(false)} className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-900">
+                      <i className="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+                <nav className="flex flex-col gap-3 overflow-y-auto">
+                  <NavItem icon="fa-solid fa-microchip" label="Technology" active={selectedCategory === 'technology'} onClick={() => { setSelectedCategory('technology'); setIsMobileMenuOpen(false); }} />
+                  <NavItem icon="fa-solid fa-chart-pie" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setIsMobileMenuOpen(false); }} />
+                  <NavItem icon="fa-solid fa-vial-virus" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setIsMobileMenuOpen(false); }} />
+                  <NavItem icon="fa-solid fa-medal" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setIsMobileMenuOpen(false); }} />
+                  <NavItem icon="fa-solid fa-clapperboard" label="Entertainment" active={selectedCategory === 'entertainment'} onClick={() => { setSelectedCategory('entertainment'); setIsMobileMenuOpen(false); }} />
+                  <div className="h-px bg-slate-100 my-8"></div>
+                  <button onClick={handleLogout} className="flex items-center gap-4 px-4 py-4 text-[15px] font-bold text-red-500 rounded-2xl hover:bg-red-50 transition-colors">
+                      <i className="fa-solid fa-power-off"></i>
+                      Sign out
+                  </button>
+                </nav>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
+  );
+}
+
+// Sub-components for better performance and Framer Motion logic
+function NewsCard({ 
+  article, 
+  index, 
+  savedUrls, 
+  toggleSaveArticle, 
+  summaries, 
+  summarizingUrls, 
+  handleSummarize 
+}) {
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: (index % 6) * 0.1 }}
+      className="group flex flex-col h-full bg-white/50 hover:bg-white rounded-[2.5rem] p-4 transition-all hover:shadow-premium-hover border border-transparent hover:border-white ring-1 ring-slate-200/50"
+    >
+      <div className="w-full h-64 rounded-[2rem] overflow-hidden mb-6 relative border border-slate-100 shadow-inner">
+        <img 
+          src={article.urlToImage} 
+          alt={article.title} 
+          className="w-full h-full object-cover transform scale-110 group-hover:scale-100 transition-transform duration-[1.5s] ease-out"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        
+        {/* Bookmark Button */}
+        <button 
+          onClick={(e) => toggleSaveArticle(e, article)}
+          className="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center text-slate-800 hover:text-indigo-600 hover:scale-110 active:scale-90 transition-all shadow-lg z-20"
+        >
+          <i className={savedUrls.has(article.url) ? "fa-solid fa-bookmark text-indigo-600" : "fa-regular fa-bookmark"}></i>
+        </button>
+
+        {/* AI summary small trigger */}
+        <button 
+           onClick={(e) => handleSummarize(e, article)}
+           className="absolute bottom-4 left-4 h-9 px-4 rounded-xl glass text-[11px] font-bold text-slate-800 flex items-center gap-2 hover:bg-white transition-all opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 duration-500"
+        >
+          <i className="fa-solid fa-sparkles text-indigo-500"></i>
+          Summarize
+        </button>
+      </div>
+
+      <div className="flex items-center gap-3 mb-4 px-2">
+        <span className="px-3 py-1 rounded-lg bg-slate-900 text-white text-[10px] font-black tracking-widest uppercase">
+          {article.category || 'News'}
+        </span>
+        <span className="text-[12px] text-slate-400 font-medium flex items-center gap-1.5">
+          <i className="fa-regular fa-calendar-days text-[11px]"></i>
+          {article.publishedAt}
+        </span>
+      </div>
+
+      <h2 className="text-[19px] font-extrabold text-slate-950 leading-[1.3] mb-3 group-hover:text-indigo-600 transition-colors line-clamp-3 font-outfit px-2">
+        {article.title}
+      </h2>
+      
+      <p className="text-[14px] text-slate-500 line-clamp-2 mb-6 px-2 leading-relaxed font-medium">
+        {article.description}
+      </p>
+
+      {/* AI Summary Section (Expanded) */}
+      <AnimatePresence>
+        {summaries[article.url] && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="mb-6 p-5 glass rounded-2xl border-indigo-500/10 shadow-inner"
+          >
+            <p className="text-[12.5px] font-bold leading-relaxed text-slate-800 italic">
+              <i className="fa-solid fa-sparkles text-indigo-500 mr-2"></i>
+              {summaries[article.url]}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="mt-auto flex items-center gap-3 pt-6 border-t border-slate-100/80 px-2 pb-2">
+        <div className="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-[11px] font-black text-indigo-600 shadow-sm">
+          {(article.author && article.author[0] !== 'h') ? article.author.charAt(0).toUpperCase() : 'N'}
+        </div>
+        <div className="flex flex-col min-w-0">
+          <span className="text-[13px] font-bold text-slate-900 truncate">{article.author}</span>
+          <span className="text-[11px] text-slate-400 font-bold uppercase tracking-tighter truncate">{article.source}</span>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
 // Helper Components
 function MobileNavItem({ icon, label, active, onClick }) {
   return (
-    <button onClick={onClick} className={`flex flex-col items-center gap-1 p-2 ${active ? 'text-indigo-600' : 'text-gray-400'}`}>
-       <i className={`${icon} text-[18px]`}></i>
-       <span className="text-[10px] font-bold uppercase tracking-tight">{label}</span>
+    <button onClick={onClick} className={cn(
+      "flex flex-col items-center gap-1.5 p-2 transition-all transition-colors active:scale-90",
+      active ? "text-white" : "text-slate-500 hover:text-slate-300"
+    )}>
+       <i className={cn(icon, "text-xl", active && "animate-pulse")}></i>
+       <span className="text-[9px] font-black uppercase tracking-widest">{label}</span>
     </button>
   );
 }
 
 function NavItem({ icon, label, active, onClick }) {
   return (
-    <button onClick={(e) => { e.preventDefault(); onClick(); }} className={`flex items-center w-full justify-start gap-3 px-3 py-2 text-[14px] font-medium rounded-lg transition-all ${active ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 group'}`}>
-      <div className={`w-6 flex justify-center ${active ? 'text-indigo-500' : 'text-gray-400 group-hover:text-gray-500'}`}>
+    <button 
+      onClick={(e) => { e.preventDefault(); onClick(); }} 
+      className={cn(
+        "flex items-center w-full group justify-start gap-4 px-4 py-3.5 text-[14px] font-bold rounded-2xl transition-all duration-300",
+        active 
+          ? "bg-slate-950 text-white shadow-xl shadow-slate-950/20 translate-x-1" 
+          : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+      )}
+    >
+      <div className={cn(
+        "w-6 flex justify-center text-lg transition-transform group-hover:scale-110",
+        active ? "text-indigo-400" : "text-slate-400 group-hover:text-slate-900"
+      )}>
         <i className={icon}></i>
       </div>
-      {label}
+      <span className="tracking-tight">{label}</span>
+      {active && (
+        <motion.div 
+          layoutId="activeTab"
+          className="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-400"
+        />
+      )}
     </button>
   );
 }

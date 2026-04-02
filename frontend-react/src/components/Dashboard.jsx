@@ -12,6 +12,8 @@ export default function Dashboard() {
   const [savedUrls, setSavedUrls] = useState(new Set());
   const [summaries, setSummaries] = useState({}); // { articleUrl: 'Summary content' }
   const [summarizingUrls, setSummarizingUrls] = useState(new Set());
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   // Initial fetch of saved articles to sync bookmarks
@@ -213,7 +215,17 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Search */}
+          {/* Mobile Search Icon Toggle */}
+          <div className="md:hidden flex items-center">
+             <button 
+               onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
+               className="w-9 h-9 flex items-center justify-center text-gray-500 hover:text-gray-900 transition-colors"
+             >
+               <i className={`fa-solid ${isMobileSearchOpen ? 'fa-xmark' : 'fa-search'} text-lg`}></i>
+             </button>
+          </div>
+
+          {/* Desktop Search (Original) */}
           <div className="flex-1 max-w-xl hidden md:flex items-center">
             <form onSubmit={handleSearch} className="relative w-full">
               <i className="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
@@ -227,7 +239,7 @@ export default function Dashboard() {
             </form>
           </div>
 
-          <div className="flex items-center gap-4 ml-auto">
+          <div className="flex items-center gap-2 md:gap-4 ml-auto">
             <button className="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-gray-900 hover:shadow-sm transition-all focus:outline-none">
               <i className="fa-regular fa-bell"></i>
             </button>
@@ -236,6 +248,23 @@ export default function Dashboard() {
             </div>
           </div>
         </header>
+
+        {/* Mobile Search Bar (Appears when toggled) */}
+        {isMobileSearchOpen && (
+          <div className="md:hidden bg-white border-b border-gray-200 p-4 sticky top-16 z-10 animate-slide-down">
+             <form onSubmit={(e) => { handleSearch(e); setIsMobileSearchOpen(false); }} className="relative w-full">
+                <i className="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input 
+                  type="text" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search NovaNews..." 
+                  className="w-full h-11 pl-10 pr-4 bg-gray-50 border border-gray-200 rounded-xl text-[15px] focus:bg-white focus:ring-2 focus:ring-indigo-500/20 outline-none" 
+                  autoFocus
+                />
+             </form>
+          </div>
+        )}
 
         {/* Dashboard Content */}
         <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
@@ -348,11 +377,55 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-200 px-6 py-2 pb-6 flex justify-between items-center z-40">
+        <MobileNavItem icon="fa-solid fa-house" label="Home" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
+        <MobileNavItem icon="fa-solid fa-bookmark" label="Saved" active={selectedCategory === 'saved'} onClick={() => { setSelectedCategory('saved'); setSearchQuery(''); }} />
+        <MobileNavItem icon="fa-solid fa-search" label="Search" active={isMobileSearchOpen} onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)} />
+        <MobileNavItem icon="fa-solid fa-grid-2" label="Topics" active={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+      </nav>
+
+      {/* Mobile Side Menu/Drawer (Simplified Overlay) */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-50 flex justify-end">
+           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setIsMobileMenuOpen(false)}></div>
+           <div className="relative w-80 max-w-xs h-full bg-white shadow-2xl flex flex-col p-6 animate-slide-left">
+              <div className="flex items-center justify-between mb-8">
+                 <span className="text-xl font-bold text-gray-900 tracking-tight">Topics</span>
+                 <button onClick={() => setIsMobileMenuOpen(false)} className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-500">
+                    <i className="fa-solid fa-xmark"></i>
+                 </button>
+              </div>
+              <nav className="flex flex-col gap-2 overflow-y-auto">
+                 <NavItem icon="fa-solid fa-microchip" label="Technology" active={selectedCategory === 'technology'} onClick={() => { setSelectedCategory('technology'); setIsMobileMenuOpen(false); }} />
+                 <NavItem icon="fa-solid fa-chart-line" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setIsMobileMenuOpen(false); }} />
+                 <NavItem icon="fa-solid fa-flask" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setIsMobileMenuOpen(false); }} />
+                 <NavItem icon="fa-solid fa-running" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setIsMobileMenuOpen(false); }} />
+                 <NavItem icon="fa-solid fa-film" label="Entertainment" active={selectedCategory === 'entertainment'} onClick={() => { setSelectedCategory('entertainment'); setIsMobileMenuOpen(false); }} />
+                 <div className="h-px bg-gray-100 my-4"></div>
+                 <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-3 text-[14px] font-semibold text-red-500 rounded-lg hover:bg-red-50">
+                    <i className="fa-solid fa-right-from-bracket"></i>
+                    Sign out
+                 </button>
+              </nav>
+           </div>
+        </div>
+      )}
     </div>
   );
 }
 
-// Helper Component
+// Helper Components
+function MobileNavItem({ icon, label, active, onClick }) {
+  return (
+    <button onClick={onClick} className={`flex flex-col items-center gap-1 p-2 ${active ? 'text-indigo-600' : 'text-gray-400'}`}>
+       <i className={`${icon} text-[18px]`}></i>
+       <span className="text-[10px] font-bold uppercase tracking-tight">{label}</span>
+    </button>
+  );
+}
+
 function NavItem({ icon, label, active, onClick }) {
   return (
     <button onClick={(e) => { e.preventDefault(); onClick(); }} className={`flex items-center w-full justify-start gap-3 px-3 py-2 text-[14px] font-medium rounded-lg transition-all ${active ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 group'}`}>

@@ -9,6 +9,13 @@ from supabase import create_client, ClientOptions
 
 # Configuration will happen inside the summarize function to ensure .env is ready
 
+def get_current_user_id():
+    """Returns the current user_id from session or X-User-ID header for cross-domain support."""
+    user_id = session.get('user_id')
+    if not user_id:
+        user_id = request.headers.get('X-User-ID')
+    return user_id
+
 def get_auth_supabase():
     """Returns a Supabase client authenticated as the current user, to bypass RLS errors."""
     access_token = session.get('access_token')
@@ -16,7 +23,6 @@ def get_auth_supabase():
         options = ClientOptions(headers={"Authorization": f"Bearer {access_token}"})
         return create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"), options=options)
     return supabase
-
 
 news_bp = Blueprint('news', __name__)
 
@@ -210,7 +216,7 @@ def summarize_article():
 
 @news_bp.route('/save', methods=['POST'])
 def save_article():
-    user_id = session.get('user_id')
+    user_id = get_current_user_id()
     if not user_id:
         return jsonify({"status": "error", "error": "Not authenticated"}), 401
         
@@ -252,7 +258,7 @@ def save_article():
 
 @news_bp.route('/unsave', methods=['DELETE'])
 def unsave_article():
-    user_id = session.get('user_id')
+    user_id = get_current_user_id()
     if not user_id:
         return jsonify({"status": "error", "error": "Not authenticated"}), 401
         
@@ -271,7 +277,7 @@ def unsave_article():
 
 @news_bp.route('/saved', methods=['GET'])
 def get_saved_articles():
-    user_id = session.get('user_id')
+    user_id = get_current_user_id()
     if not user_id:
         return jsonify({"status": "error", "error": "Not authenticated"}), 401
         

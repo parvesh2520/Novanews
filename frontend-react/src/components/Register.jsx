@@ -24,6 +24,10 @@ export default function Register() {
       });
 
       if (response.data.status === 'success') {
+        const { user_id } = response.data;
+        if (user_id) {
+          localStorage.setItem('user_id', user_id);
+        }
         navigate('/dashboard');
       }
     } catch (err) {

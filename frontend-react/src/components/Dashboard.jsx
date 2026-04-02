@@ -18,7 +18,11 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchSavedState = async () => {
       try {
-        const res = await axios.get('/api/news/saved', { withCredentials: true });
+        const userId = localStorage.getItem('user_id');
+        const res = await axios.get('/api/news/saved', { 
+          headers: { 'X-User-ID': userId },
+          withCredentials: true 
+        });
         if (res.data.status === 'success') {
           const urls = new Set(res.data.articles.map(a => a.url));
           setSavedUrls(urls);
@@ -50,7 +54,12 @@ export default function Dashboard() {
         params = { q: query };
       }
 
-      const res = await axios.get(url, { params, withCredentials: true });
+      const userId = localStorage.getItem('user_id');
+      const res = await axios.get(url, { 
+        params, 
+        headers: { 'X-User-ID': userId },
+        withCredentials: true 
+      });
       if (res.data.status === 'success') {
         setArticles(res.data.articles);
         if (res.data.is_mock !== undefined) {
@@ -94,10 +103,12 @@ export default function Dashboard() {
     });
 
     try {
+      const userId = localStorage.getItem('user_id');
       await axios({
         method: isCurrentlySaved ? 'delete' : 'post',
         url: apiUrl,
         data: article,
+        headers: { 'X-User-ID': userId },
         withCredentials: true
       });
       // Filter out article immediately if we are viewing the 'saved' tab and we just unsaved it
@@ -125,10 +136,14 @@ export default function Dashboard() {
     setSummarizingUrls(prev => new Set(prev).add(article.url));
     
     try {
+      const userId = localStorage.getItem('user_id');
       const res = await axios.post('/api/news/summarize', {
         title: article.title,
         description: article.description
-      }, { withCredentials: true });
+      }, { 
+        headers: { 'X-User-ID': userId },
+        withCredentials: true 
+      });
       
       if (res.data.status === 'success') {
         setSummaries(prev => ({ ...prev, [article.url]: res.data.summary }));

@@ -179,48 +179,47 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] font-sans flex">
-      {/* Sidebar Navigation */}
-      <aside className="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-100 hidden md:flex flex-col z-20">
-        <div className="h-20 flex items-center px-8">
-          <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center mr-3 shadow-sm">
-            <span className="text-white font-bold text-sm tracking-tight">N</span>
-          </div>
-          <span className="text-[17px] font-bold text-slate-900 tracking-tight">NovaNews</span>
+    <div className="min-h-screen bg-white font-sans flex text-slate-900">
+      {/* Editorial Sidebar */}
+      <aside className="fixed inset-y-0 left-0 w-64 border-r border-slate-100 hidden md:flex flex-col z-20">
+        <div className="h-16 flex items-center px-8">
+          <span className="text-[15px] font-bold tracking-[0.2em] uppercase text-slate-950">NovaNews</span>
         </div>
         
-        <div className="flex-1 overflow-y-auto py-8 px-6">
-          <nav className="flex flex-col gap-1">
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-4 px-2">Discover</div>
-            <NavItem icon="fa-solid fa-house" label="Home" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-bolt" label="Top Stories" active={selectedCategory === 'top'} onClick={() => { setSelectedCategory('top'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-bookmark" label="Saved" active={selectedCategory === 'saved'} onClick={() => { setSelectedCategory('saved'); setSearchQuery(''); }} />
+        <div className="flex-1 overflow-y-auto py-10 px-8">
+          <nav className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <NavItem icon="fa-solid fa-house" label="Overview" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
+              <NavItem icon="fa-solid fa-bolt" label="Latest" active={selectedCategory === 'top'} onClick={() => { setSelectedCategory('top'); setSearchQuery(''); }} />
+              <NavItem icon="fa-solid fa-bookmark" label="Archive" active={selectedCategory === 'saved'} onClick={() => { setSelectedCategory('saved'); setSearchQuery(''); }} />
+            </div>
             
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-4 mt-8 px-2">Categories</div>
-            <NavItem icon="fa-solid fa-microchip" label="Technology" active={selectedCategory === 'technology'} onClick={() => { setSelectedCategory('technology'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-chart-pie" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-flask" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-medal" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-clapperboard" label="Entertainment" active={selectedCategory === 'entertainment'} onClick={() => { setSelectedCategory('entertainment'); setSearchQuery(''); }} />
+            <div className="pt-6 border-t border-slate-50">
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Focus</div>
+              <div className="flex flex-col gap-1">
+                <NavItem icon="" label="Technology" active={selectedCategory === 'technology'} onClick={() => { setSelectedCategory('technology'); setSearchQuery(''); }} />
+                <NavItem icon="" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setSearchQuery(''); }} />
+                <NavItem icon="" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setSearchQuery(''); }} />
+                <NavItem icon="" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setSearchQuery(''); }} />
+                <NavItem icon="" label="Culture" active={selectedCategory === 'entertainment'} onClick={() => { setSelectedCategory('entertainment'); setSearchQuery(''); }} />
+              </div>
+            </div>
           </nav>
         </div>
 
-        <div className="p-8">
-          <button onClick={handleLogout} className="flex items-center w-full gap-3 px-2 py-2 text-[13px] font-semibold text-slate-400 hover:text-slate-900 transition-colors group">
-            <i className="fa-solid fa-power-off text-slate-300 group-hover:text-slate-900 transition-colors"></i>
-            Sign out
+        <div className="p-8 border-t border-slate-50">
+          <button onClick={handleLogout} className="text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-red-500 transition-colors">
+            Exit Portal
           </button>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 md:ml-64 flex flex-col min-h-screen relative z-10">
-        {/* Header */}
-        <header className="h-20 sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100 px-8 flex items-center justify-between shadow-sm">
-          <div className="md:hidden flex items-center">
-            <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center mr-3 shadow-md">
-              <span className="text-white font-bold text-sm">N</span>
-            </div>
+      {/* Main Content Area */}
+      <main className="flex-1 md:ml-64 flex flex-col min-h-screen">
+        {/* Minimal Header */}
+        <header className="h-16 sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-50 px-8 flex items-center justify-between">
+          <div className="md:hidden">
+            <span className="text-[13px] font-black tracking-widest text-slate-900">NN</span>
           </div>
 
           {/* Mobile Search Icon Toggle */}
@@ -233,181 +232,124 @@ export default function Dashboard() {
              </button>
           </div>
 
-          {/* Desktop Search (Original) */}
-          <div className="flex-1 max-w-xl hidden md:flex items-center">
-            <form onSubmit={handleSearch} className="relative w-full">
-              <i className="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+          {/* Search Field */}
+          <div className="flex-1 max-w-sm hidden md:flex items-center">
+            <form onSubmit={handleSearch} className="w-full">
               <input 
                 type="text" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search for news, topics, or sources..." 
-                className="w-full h-9 pl-10 pr-4 bg-gray-100/50 hover:bg-gray-100 border border-transparent focus:bg-white focus:border-indigo-500/30 focus:ring-2 focus:ring-indigo-500/20 rounded-full text-[14px] transition-all outline-none" 
+                placeholder="Find a story..." 
+                className="w-full h-8 bg-transparent text-[13px] border-b border-transparent focus:border-slate-900 transition-all outline-none" 
               />
             </form>
           </div>
-
-          <div className="flex items-center gap-2 md:gap-4 ml-auto">
-            <button className="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-gray-900 hover:shadow-sm transition-all focus:outline-none">
-              <i className="fa-regular fa-bell"></i>
+          
+          <div className="flex items-center gap-6 ml-auto">
+            <button className="text-slate-400 hover:text-slate-900 transition-colors">
+              <i className="fa-regular fa-bell text-[14px]"></i>
             </button>
             
-            {/* Profile Dropdown Container */}
-            <div className="relative">
-              <div 
-                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                className="w-9 h-9 rounded-full overflow-hidden border border-gray-200 ring-2 ring-white cursor-pointer hover:ring-indigo-100 transition-all active:scale-95"
-              >
+            <div 
+              onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+              className="relative flex items-center gap-3 cursor-pointer group"
+            >
+              <div className="w-7 h-7 bg-slate-100 rounded-full overflow-hidden border border-slate-100 grayscale hover:grayscale-0 transition-all">
                 <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1528&auto=format&fit=crop" alt="Profile" className="w-full h-full object-cover" />
               </div>
-
-              {/* Profile Menu Dropdown */}
+              <span className="text-[12px] font-bold text-slate-900 hidden lg:block">Parvesh K.</span>
+              
               {isProfileMenuOpen && (
-                <>
-                  <div className="fixed inset-0 z-20" onClick={() => setIsProfileMenuOpen(false)}></div>
-                  <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-30 animate-scale-in">
-                    <div className="px-4 py-2 border-b border-gray-50 mb-1">
-                       <p className="text-[13px] font-bold text-gray-900">Parvesh Kumar</p>
-                       <p className="text-[11px] text-gray-500 truncate">parvesh2520@gmail.com</p>
-                    </div>
-                    <button className="w-full text-left px-4 py-2 text-[13px] text-gray-600 hover:bg-gray-50 hover:text-indigo-600 transition-colors flex items-center gap-3 font-medium">
-                       <i className="fa-regular fa-user text-[14px]"></i>
-                       My Profile
-                    </button>
-                    <button className="w-full text-left px-4 py-2 text-[13px] text-gray-600 hover:bg-gray-50 hover:text-indigo-600 transition-colors flex items-center gap-3 font-medium">
-                       <i className="fa-regular fa-gear text-[14px]"></i>
-                       Settings
-                    </button>
-                    <div className="h-px bg-gray-50 my-1"></div>
-                    <button 
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-[13px] text-red-500 hover:bg-red-50 transition-colors flex items-center gap-3 font-semibold"
-                    >
-                       <i className="fa-solid fa-right-from-bracket text-[14px]"></i>
-                       Sign Out
-                    </button>
-                  </div>
-                </>
+                <div className="absolute right-0 top-full mt-4 w-44 bg-white border border-slate-100 py-2 shadow-2xl z-50">
+                  <button onClick={handleLogout} className="w-full px-4 py-2 text-left text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-red-500">Sign Out</button>
+                </div>
               )}
             </div>
           </div>
         </header>
 
-        {/* Mobile Search Bar (Appears when toggled) */}
-        {isMobileSearchOpen && (
-          <div className="md:hidden bg-white border-b border-gray-200 p-4 sticky top-16 z-10 animate-slide-down">
-             <form onSubmit={(e) => { handleSearch(e); setIsMobileSearchOpen(false); }} className="relative w-full">
-                <i className="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input 
-                  type="text" 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search NovaNews..." 
-                  className="w-full h-11 pl-10 pr-4 bg-gray-50 border border-gray-200 rounded-xl text-[15px] focus:bg-white focus:ring-2 focus:ring-indigo-500/20 outline-none" 
-                  autoFocus
-                />
-             </form>
-          </div>
-        )}
-
         {/* Dashboard Content */}
-        <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-          {/* Hero Featured Story */}
+        <div className="flex-1 p-8 md:p-16 max-w-7xl mx-auto w-full">
+          {/* Editorial Hero Area */}
           <AnimatePresence mode="wait">
             {!isLoading && articles.length > 0 && selectedCategory === 'general' && !searchQuery && (
               <motion.div 
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.3 }}
-                className="mb-16"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="mb-24 flex flex-col lg:flex-row gap-12 lg:items-center"
               >
-                <div className="group relative w-full h-[500px] rounded-[1.5rem] overflow-hidden shadow-premium border border-slate-100">
-                  <img src={articles[0].urlToImage} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700" alt="Featured" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent"></div>
-                  
-                  <div className="absolute bottom-0 left-0 p-10 md:p-16 w-full md:w-2/3">
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="flex items-center gap-2 mb-6"
-                    >
-                      <span className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
-                      <span className="text-[11px] font-bold text-white/70 uppercase tracking-[0.2em]">Featured Today</span>
-                    </motion.div>
-                    <motion.h1 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
-                      className="text-3xl md:text-5xl font-bold text-white mb-8 leading-[1.1] tracking-tight"
-                    >
-                      {articles[0].title}
-                    </motion.h1>
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.4 }}
-                      className="flex items-center gap-4"
-                    >
-                      <a href={articles[0].url} target="_blank" rel="noreferrer" className="px-8 py-3 bg-white text-slate-950 rounded-xl font-bold text-[14px] hover:bg-slate-50 transition-all shadow-xl">
-                        Full Story
-                      </a>
-                      <button 
-                        onClick={(e) => handleSummarize(e, articles[0])}
-                        className="px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all flex items-center gap-2"
-                      >
-                         <i className="fa-solid fa-sparkles text-indigo-300"></i>
-                         <span className="font-bold text-[14px]">AI Analysis</span>
-                      </button>
-                    </motion.div>
+                <div className="w-full lg:w-3/5">
+                  <div className="relative aspect-[16/10] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+                    <img src={articles[0].urlToImage} className="w-full h-full object-cover" alt="Cover" />
                   </div>
                 </div>
                 
-                {/* Hero AI Summary Overlay */}
-                {summaries[articles[0].url] && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-6 p-10 bg-white rounded-[1.5rem] border border-slate-100 shadow-premium"
-                  >
-                    <p className="text-[17px] font-medium text-slate-800 leading-relaxed italic">
-                      {summaries[articles[0].url]}
+                <div className="w-full lg:w-2/5 py-4">
+                  <div className="flex flex-col gap-6">
+                    <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">Lead Story</div>
+                    <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 leading-[1.15] tracking-tight">
+                      {articles[0].title}
+                    </h1>
+                    <p className="text-slate-500 text-[15px] leading-relaxed">
+                      {articles[0].description}
                     </p>
-                  </motion.div>
-                )}
+                    <div className="flex items-center gap-8 pt-4">
+                      <a href={articles[0].url} target="_blank" rel="noreferrer" className="text-[12px] font-bold uppercase tracking-widest text-slate-950 border-b border-slate-950 pb-1">
+                        Read Online
+                      </a>
+                      <button 
+                        onClick={(e) => handleSummarize(e, articles[0])}
+                        className="text-[12px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-950 transition-colors"
+                      >
+                         AI Synopsis
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {summaries[articles[0].url] && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-10 p-8 bg-slate-50 border-l border-slate-900"
+                    >
+                      <p className="text-[14px] text-slate-700 leading-relaxed italic">
+                        {summaries[articles[0].url]}
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* Grid Header */}
+          <div className="h-px bg-slate-100 mb-16"></div>
+
+          {/* Grid Layout Filter Bar */}
           <div className="flex items-center justify-between mb-12">
-             <div className="flex items-center gap-4">
-                <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-                   {selectedCategory === 'saved' ? 'Your Anthology' : 'Recent Updates'}
-                </h2>
-                <div className="h-px w-12 bg-slate-200"></div>
+             <div className="flex flex-col gap-1">
+                <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.4em]">Current Feed</h2>
+                <span className="text-[15px] font-semibold text-slate-900">{selectedCategory === 'saved' ? 'Curated Archives' : 'Global Pulse'}</span>
              </div>
           </div>
 
           <motion.div 
              layout
-             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-12"
+             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-12"
           >
             {isLoading ? (
-              // Refined Skeletons
+              // Enhanced Editorial Skeletons
               Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="flex flex-col gap-6">
-                  <div className="w-full h-64 bg-slate-100 rounded-2xl animate-pulse"></div>
-                  <div className="space-y-4">
-                    <div className="w-1/3 h-4 bg-slate-100 rounded-full animate-pulse"></div>
-                    <div className="w-full h-6 bg-slate-100 rounded-lg animate-pulse"></div>
-                    <div className="w-2/3 h-6 bg-slate-100 rounded-lg animate-pulse"></div>
+                  <div className="w-full h-56 bg-slate-50"></div>
+                  <div className="space-y-3">
+                    <div className="w-16 h-3 bg-slate-50"></div>
+                    <div className="w-full h-10 bg-slate-50"></div>
                   </div>
                 </div>
               ))
             ) : (
-              // Minimal News Cards
+              // Editorial News Cards
               <AnimatePresence>
                 {articles.map((article, index) => (
                   <NewsCard 
@@ -427,12 +369,12 @@ export default function Dashboard() {
         </div>
       </main>
 
-      {/* Mobile Navigation (Minimalist) */}
-      <nav className="md:hidden fixed bottom-6 left-6 right-6 bg-slate-900 rounded-2xl px-8 py-5 flex justify-between items-center z-50 shadow-2xl border border-white/5">
-        <MobileNavItem icon="fa-solid fa-house" label="Home" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
-        <MobileNavItem icon="fa-solid fa-bookmark" label="Saved" active={selectedCategory === 'saved'} onClick={() => { setSelectedCategory('saved'); setSearchQuery(''); }} />
-        <MobileNavItem icon="fa-solid fa-magnifying-glass" label="Search" active={isMobileSearchOpen} onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)} />
-        <MobileNavItem icon="fa-solid fa-bars" label="Menu" active={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+      {/* Mobile Nav Refinement */}
+      <nav className="md:hidden fixed bottom-6 left-6 right-6 bg-slate-950 rounded-full px-8 py-4 flex justify-between items-center z-50 shadow-2xl">
+        <MobileNavItem icon="fa-solid fa-house" label="" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
+        <MobileNavItem icon="fa-solid fa-bookmark" label="" active={selectedCategory === 'saved'} onClick={() => { setSelectedCategory('saved'); setSearchQuery(''); }} />
+        <MobileNavItem icon="fa-solid fa-magnifying-glass" label="" active={isMobileSearchOpen} onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)} />
+        <MobileNavItem icon="fa-solid fa-bars" label="" active={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
       </nav>
 
       {/* Mobile Side Menu/Drawer (Enhanced) */}
@@ -492,52 +434,44 @@ function NewsCard({
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.3, delay: (index % 6) * 0.05 }}
-      className="group flex flex-col h-full bg-white rounded-2xl p-5 border border-slate-100/60 transition-all hover:shadow-premium ring-1 ring-black/5"
+      className="group flex flex-col h-full bg-white transition-all overflow-hidden"
     >
-      <div className="w-full h-56 rounded-xl overflow-hidden mb-6 relative border border-slate-50">
+      <div className="w-full aspect-[4/3] overflow-hidden mb-6 relative grayscale hover:grayscale-0 transition-all duration-700">
         <img 
           src={article.urlToImage} 
           alt={article.title} 
-          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+          className="w-full h-full object-cover"
         />
         
-        {/* Bookmark Button */}
+        {/* Minimal Bookmark */}
         <button 
           onClick={(e) => toggleSaveArticle(e, article)}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-slate-600 hover:text-slate-950 transition-all z-20"
+          className="absolute top-4 right-4 w-6 h-6 flex items-center justify-center text-white mix-blend-difference hover:scale-110 transition-transform z-20"
         >
-          <i className={savedUrls.has(article.url) ? "fa-solid fa-bookmark text-slate-900" : "fa-regular fa-bookmark"}></i>
+          <i className={savedUrls.has(article.url) ? "fa-solid fa-bookmark" : "fa-regular fa-bookmark"}></i>
         </button>
       </div>
 
       <div className="flex items-center gap-3 mb-4">
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-          {article.category || 'Focus'}
-        </span>
-        <span className="w-1 h-1 bg-slate-200 rounded-full"></span>
-        <span className="text-[11px] text-slate-400 font-medium">
-          {article.publishedAt}
+        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+          {article.source}
         </span>
       </div>
 
-      <h2 className="text-[17px] font-bold text-slate-950 leading-[1.4] mb-3 group-hover:underline decoration-slate-200 transition-all line-clamp-2">
+      <h2 className="text-[18px] font-semibold text-slate-950 leading-[1.3] mb-4 tracking-tight group-hover:text-slate-600 transition-colors">
         {article.title}
       </h2>
       
-      <p className="text-[14px] text-slate-500 line-clamp-2 mb-6 leading-relaxed">
-        {article.description}
-      </p>
-
-      {/* AI Summary Section (Minimal) */}
+      {/* AI Summary Subsection */}
       <AnimatePresence>
         {summaries[article.url] && (
           <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="mb-6 p-4 bg-slate-50 rounded-xl"
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-4 bg-slate-50 border-l border-slate-900"
           >
             <p className="text-[12px] font-medium leading-relaxed text-slate-700 italic">
               {summaries[article.url]}
@@ -546,19 +480,13 @@ function NewsCard({
         )}
       </AnimatePresence>
 
-      <div className="mt-auto flex items-center gap-3 pt-6 border-t border-slate-50">
-        <div className="w-7 h-7 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 shadow-sm">
-          {(article.author && article.author[0] !== 'h') ? article.author.charAt(0).toUpperCase() : 'N'}
-        </div>
-        <div className="flex flex-col min-w-0">
-          <span className="text-[12px] font-bold text-slate-700 truncate">{article.author}</span>
-          <span className="text-[10px] text-slate-400 font-medium truncate uppercase tracking-tighter">{article.source}</span>
-        </div>
+      <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-50">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{article.publishedAt}</span>
         <button 
            onClick={(e) => handleSummarize(e, article)}
-           className="ml-auto w-8 h-8 rounded-lg text-slate-300 hover:text-indigo-500 transition-colors"
+           className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-950 flex items-center gap-2 transition-colors"
         >
-          <i className="fa-solid fa-sparkles text-[14px]"></i>
+          Analysis
         </button>
       </div>
     </motion.div>
@@ -566,14 +494,13 @@ function NewsCard({
 }
 
 // Helper Components
-function MobileNavItem({ icon, label, active, onClick }) {
+function MobileNavItem({ icon, active, onClick }) {
   return (
     <button onClick={onClick} className={cn(
-      "flex flex-col items-center gap-1 p-1 transition-all active:scale-95",
-      active ? "text-white" : "text-slate-500"
+      "p-3 rounded-full transition-all active:scale-90",
+      active ? "text-white bg-white/10" : "text-slate-500"
     )}>
-       <i className={cn(icon, "text-lg")}></i>
-       <span className="text-[9px] font-bold uppercase tracking-tight">{label}</span>
+       <i className={cn(icon, "text-xl")}></i>
     </button>
   );
 }
@@ -583,22 +510,14 @@ function NavItem({ icon, label, active, onClick }) {
     <button 
       onClick={(e) => { e.preventDefault(); onClick(); }} 
       className={cn(
-        "flex items-center w-full group justify-start gap-4 px-4 py-2.5 text-[14px] font-semibold rounded-xl transition-all duration-200",
+        "flex items-center w-full group justify-start gap-4 py-1 text-[13px] font-bold uppercase tracking-[0.1em] transition-all",
         active 
-          ? "bg-slate-50 text-slate-950" 
-          : "text-slate-400 hover:text-slate-900"
+          ? "text-slate-950" 
+          : "text-slate-400 hover:text-slate-950"
       )}
     >
-      <div className={cn(
-        "w-5 flex justify-center text-base",
-        active ? "text-slate-900" : "text-slate-300 group-hover:text-slate-900"
-      )}>
-        <i className={icon}></i>
-      </div>
+      {icon && <i className={cn(icon, active ? "text-slate-900" : "text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity")}></i>}
       <span className="tracking-tight">{label}</span>
-      {active && (
-        <div className="ml-auto w-1 h-1 rounded-full bg-slate-900" />
-      )}
     </button>
   );
 }

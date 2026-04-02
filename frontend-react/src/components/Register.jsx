@@ -38,7 +38,14 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center p-4 relative font-sans">
+    <div className="min-h-screen flex items-center justify-center p-4 relative font-sans">
+      {/* Background Glow & Patterns */}
+      <div className="fixed inset-0 pointer-events-none flex justify-center items-center overflow-hidden z-0 bg-slate-50/50">
+        <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[600px] bg-indigo-200/20 rounded-full blur-[120px] animate-blob"></div>
+        <div className="absolute top-[20%] right-[-10%] w-[600px] h-[500px] bg-blue-200/20 rounded-full blur-[100px] animate-blob" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      </div>
+
       <div className="w-full max-w-[400px] relative z-10">
         <div className="bg-white rounded-xl shadow-soft border border-slate-200 p-8 overflow-hidden relative">
           {/* Header */}

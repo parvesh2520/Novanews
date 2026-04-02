@@ -38,26 +38,16 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative font-sans">
-      {/* Background Glow & Patterns */}
-      <div className="fixed inset-0 pointer-events-none flex justify-center items-center overflow-hidden z-0 bg-slate-50/50">
-        <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[600px] bg-indigo-300/30 rounded-full blur-[120px] animate-blob"></div>
-        <div className="absolute top-[20%] right-[-10%] w-[600px] h-[500px] bg-blue-300/30 rounded-full blur-[100px] animate-blob" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-      </div>
-
+    <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center p-4 relative font-sans">
       <div className="w-full max-w-[400px] relative z-10">
-        <div className="bg-white/80 backdrop-blur-2xl rounded-2xl shadow-[0_16px_60px_rgba(0,0,0,0.08)] border border-white/60 p-8 overflow-hidden relative">
-          {/* Top Brand Line */}
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-blue-500 to-indigo-500"></div>
-
+        <div className="bg-white rounded-xl shadow-soft border border-slate-200 p-8 overflow-hidden relative">
           {/* Header */}
-          <div className="flex flex-col items-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-gray-900 to-black rounded-2xl flex items-center justify-center mb-5 shadow-[0_4px_20px_rgba(0,0,0,0.15)] ring-4 ring-gray-900/5">
-              <span className="text-white font-bold text-xl tracking-tighter">N</span>
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center mb-4 shadow-sm">
+              <span className="text-white font-bold text-lg">N</span>
             </div>
-            <h1 className="text-[20px] font-bold text-gray-900 mb-1 tracking-tight">Create an account</h1>
-            <p className="text-sm text-gray-500">Welcome! Please enter your details to sign up</p>
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight">Create an account</h1>
+            <p className="text-xs text-slate-500 mt-1">Join the professional news portal</p>
           </div>
 
           {/* Social Auth */}
@@ -116,7 +106,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full h-9 mt-2 flex items-center justify-center gap-2 bg-gray-900 text-white rounded-lg text-[14px] font-medium hover:bg-black hover:shadow-lg hover:shadow-gray-900/20 hover:-translate-y-0.5 transition-all outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-[0.98] disabled:opacity-80 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-none"
+              className="w-full h-9 mt-2 flex items-center justify-center gap-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800 transition-all focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-[0.98] disabled:opacity-80 disabled:cursor-not-allowed"
             >
               {isLoading ? <div className="loader"></div> : <span>Create account</span>}
             </button>

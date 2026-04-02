@@ -1,0 +1,11 @@
+# Project dependencies
+flask
+flask-sqlalchemy
+python-dotenv
+requests
+google-generativeai
+werkzeug
+psycopg2-binary
+supabase
+gunicorn
+flask-cors

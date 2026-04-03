@@ -11,8 +11,11 @@ from auth import auth
 from news import news_bp
 
 app = Flask(__name__)
-# Enable CORS for cross-origin requests from Vercel
-CORS(app, supports_credentials=True)
+# Enable CORS for cross-origin requests from Vercel and Localhost
+CORS(app, supports_credentials=True, origins=[
+    "https://novanews-ten.vercel.app",
+    "http://localhost:5173"
+])
 
 
 @app.before_request

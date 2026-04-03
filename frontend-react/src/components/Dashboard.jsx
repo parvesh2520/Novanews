@@ -466,6 +466,7 @@ function NewsCard({ article, index, savedUrls, toggleSaveArticle, summaries, sum
           Read Report <i className="fa-solid fa-arrow-right text-[9px] translate-x-0 group-hover:translate-x-0.5 transition-transform"></i>
         </a>
         <button 
+          onClick={(e) => handleSummarize(e, article)} 
           className="text-[11px] font-bold text-slate-400 hover:text-indigo-500 transition-colors flex items-center gap-1.5"
           title="AI Summary"
           disabled={summarizingUrls.has(article.url)}

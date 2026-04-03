@@ -3,6 +3,7 @@ import axios from 'axios'
 import Login from './components/Login'
 import Register from './components/Register'
 import Dashboard from './components/Dashboard'
+import AuthCallback from './components/AuthCallback'
 import './index.css'
 
 // Set GLOBAL axios defaults for production
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/social-callback" element={<AuthCallback />} />
         </Routes>
       </div>
     </Router>

@@ -85,3 +85,93 @@ def logout():
     session.pop('user_id', None)
     session.pop('access_token', None)
     return {"status": "success", "message": "Logged out successfully"}, 200
+
+@auth.route('/authorize/<provider>')
+def authorize(provider):
+    """Initiates Supabase OAuth flow and returns the redirect URL."""
+    try:
+        # provider is 'google' or 'github'
+        # redirectTo should be the frontend callback route
+        # Dynamically determine the redirect URI based on the request origin
+        # This allows the same code to work on Localhost and Vercel
+        origin = request.headers.get('Origin') or 'http://localhost:5173'
+        redirect_uri = f"{origin}/social-callback"
+
+        res = supabase.auth.sign_in_with_oauth({
+            "provider": provider,
+            "options": {
+                "redirect_to": redirect_uri
+            }
+        })
+        return {"status": "success", "url": res.url}, 200
+    except Exception as e:
+        return {"status": "error", "error": str(e)}, 500
+
+@auth.route('/verify-session', methods=['POST'])
+def verify_session():
+    """Synchronizes the Flask session with a validated Supabase session from the frontend."""
+    data = request.json or {}
+    access_token = data.get('access_token')
+
+    if not access_token:
+        return {"status": "error", "error": "Invalid session data"}, 400
+
+    try:
+        # Verify token and get user from Supabase
+        user_res = supabase.auth.get_user(access_token)
+        if not user_res.user:
+            return {"status": "error", "error": "Invalid token"}, 401
+            
+        user = user_res.user
+        
+        # Set session
+        session['user_id'] = user.id
+        session['access_token'] = access_token
+        
+        # Ensure local user exists
+        local_user = User.query.filter_by(id=user.id).first()
+        if not local_user:
+            new_user = User(id=user.id, email=user.email, password_hash="SOCIAL_AUTH")
+            db.session.add(new_user)
+            db.session.commit()
+            print(f"DEBUG: Created local user for social {user.email}")
+
+        return {"status": "success", "user_id": user.id}, 200
+    except Exception as e:
+        print(f"DEBUG: Session verification error: {str(e)}")
+        return {"status": "error", "error": str(e)}, 500
+
+@auth.route('/exchange-code', methods=['POST'])
+def exchange_code():
+    """Exchanges an OAuth authorization code for a Supabase session (PKCE flow)."""
+    data = request.json or {}
+    code = data.get('code')
+
+    if not code:
+        return {"status": "error", "error": "Authorization code missing"}, 400
+
+    try:
+        # Exchange code for session
+        res = supabase.auth.exchange_code_for_session({
+            "auth_code": code
+        })
+        
+        if not res.user:
+            return {"status": "error", "error": "Invalid or expired code"}, 401
+            
+        # Set session
+        session['user_id'] = res.user.id
+        session['access_token'] = res.session.access_token
+        
+        # Ensure local user exists
+        local_user = User.query.filter_by(id=res.user.id).first()
+        if not local_user:
+            new_user = User(id=res.user.id, email=res.user.email, password_hash="SOCIAL_AUTH")
+            db.session.add(new_user)
+            db.session.commit()
+            print(f"DEBUG: Created local user for social {res.user.email}")
+
+        return {"status": "success", "user_id": res.user.id}, 200
+    except Exception as e:
+        print(f"DEBUG: Code exchange error: {str(e)}")
+        return {"status": "error", "error": str(e)}, 500

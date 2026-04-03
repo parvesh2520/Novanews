@@ -9,6 +9,17 @@ export default function Register() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const handleSocialLogin = async (provider) => {
+    try {
+      const res = await axios.get(`/auth/authorize/${provider}`);
+      if (res.data.status === 'success' && res.data.url) {
+        window.location.href = res.data.url;
+      }
+    } catch (err) {
+      setError(`Failed to initiate ${provider} login`);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -59,11 +70,19 @@ export default function Register() {
 
           {/* Social Auth */}
           <div className="flex gap-3 mb-6">
-            <button type="button" className="group flex-1 flex items-center justify-center gap-2 h-9 bg-white border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200">
+            <button 
+              type="button" 
+              onClick={() => handleSocialLogin('github')}
+              className="group flex-1 flex items-center justify-center gap-2 h-9 bg-white border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
+            >
               <i className="fa-brands fa-github text-[15px] group-hover:scale-110 transition-transform"></i>
               GitHub
             </button>
-            <button type="button" className="group flex-1 flex items-center justify-center gap-2 h-9 bg-white border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200">
+            <button 
+              type="button" 
+              onClick={() => handleSocialLogin('google')}
+              className="group flex-1 flex items-center justify-center gap-2 h-9 bg-white border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
+            >
               <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-4 h-4 group-hover:scale-110 transition-transform" alt="Google" />
               Google
             </button>

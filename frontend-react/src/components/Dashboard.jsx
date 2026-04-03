@@ -186,7 +186,14 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] font-sans flex">
+    <div className="min-h-screen bg-[#F9FAFB] font-sans flex relative overflow-hidden">
+      {/* Universal Background Gradient */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(99,102,241,0.08)_0,transparent_50%),radial-gradient(circle_at_100%_100%,rgba(59,130,246,0.08)_0,transparent_50%)]"></div>
+        <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] bg-indigo-100/10 rounded-full blur-[100px]"></div>
+        {/* Gazette Depth Glow */}
+        <div className="absolute bottom-[10%] right-[10%] w-[800px] h-[800px] bg-blue-50/5 rounded-full blur-[150px]"></div>
+      </div>
       {/* Sidebar Navigation */}
       <aside className="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 hidden md:flex flex-col z-20">
         <div className="h-16 flex items-center px-8 border-b border-slate-100">
@@ -223,6 +230,8 @@ export default function Dashboard() {
       <main className="flex-1 md:ml-64 flex flex-col min-h-screen relative z-10">
         {/* Header */}
         <header className="h-16 sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200 px-8 flex items-center justify-between">
+          {/* NovaFlair Header Accent */}
+          <div className="absolute bottom-[-1px] left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent pointer-events-none"></div>
           <div className="md:hidden flex items-center">
             <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center mr-3">
               <span className="text-white font-bold text-sm">N</span>
@@ -297,7 +306,7 @@ export default function Dashboard() {
                         ))}
                       </div>
                     </div>
-                    <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 leading-tight">
+                    <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 leading-[1.1] tracking-tight">
                       {articles[featuredIndex].title}
                     </h1>
                     <p className="text-slate-500 text-lg mb-8 leading-relaxed line-clamp-3">
@@ -309,10 +318,15 @@ export default function Dashboard() {
                       </a>
                       <button 
                         onClick={(e) => handleSummarize(e, articles[featuredIndex])}
+                        disabled={summarizingUrls.has(articles[featuredIndex].url)}
                         className="px-6 py-2.5 border border-slate-200 text-slate-600 rounded-md font-medium text-sm hover:bg-slate-50 transition-colors flex items-center gap-2"
                       >
-                         <i className="fa-solid fa-sparkles text-indigo-500"></i>
-                         AI Summary
+                         {summarizingUrls.has(articles[featuredIndex].url) ? (
+                           <div className="nova-spinner"></div>
+                         ) : (
+                           <i className="fa-solid fa-sparkles text-indigo-500"></i>
+                         )}
+                         {summaries[articles[featuredIndex].url] ? 'Summarized' : 'AI Summary'}
                       </button>
                     </div>
                   </div>
@@ -403,7 +417,7 @@ export default function Dashboard() {
 function NewsCard({ article, index, savedUrls, toggleSaveArticle, summaries, summarizingUrls, handleSummarize }) {
   return (
     <div
-      className="group flex flex-col h-full bg-white border border-slate-200 rounded-xl p-4 hover:shadow-lg hover:shadow-slate-200/40 transition-all duration-300"
+      className="group flex flex-col h-full bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300"
     >
       <div className="w-full aspect-[16/10] rounded-lg overflow-hidden mb-5 relative bg-slate-100 ring-1 ring-slate-900/5 shadow-inner">
         <img 
@@ -421,8 +435,8 @@ function NewsCard({ article, index, savedUrls, toggleSaveArticle, summaries, sum
       </div>
 
       <div className="flex items-center gap-2 mb-3">
-        <span className="px-2 py-0.5 rounded-full bg-slate-50 border border-slate-200 text-[9px] font-bold text-slate-500 uppercase tracking-wider">{article.source}</span>
-        <span className="text-[10px] text-slate-400 font-medium">{article.publishedAt}</span>
+        <span className="px-2 py-0.5 rounded-sm bg-slate-50 border border-slate-100/50 text-[9px] font-bold text-slate-500 uppercase tracking-[0.1em]">{article.source}</span>
+        <span className="text-[10px] text-slate-400 font-medium tracking-tight">{article.publishedAt}</span>
       </div>
 
       <h3 className="text-[15px] font-bold text-slate-900 leading-snug mb-2.5 group-hover:text-indigo-600 transition-colors line-clamp-2">
@@ -452,11 +466,15 @@ function NewsCard({ article, index, savedUrls, toggleSaveArticle, summaries, sum
           Read Report <i className="fa-solid fa-arrow-right text-[9px] translate-x-0 group-hover:translate-x-0.5 transition-transform"></i>
         </a>
         <button 
-          onClick={(e) => handleSummarize(e, article)} 
           className="text-[11px] font-bold text-slate-400 hover:text-indigo-500 transition-colors flex items-center gap-1.5"
           title="AI Summary"
+          disabled={summarizingUrls.has(article.url)}
         >
-          <i className={cn("fa-solid fa-sparkles text-[10px]", summaries[article.url] ? "text-indigo-600" : "text-slate-300")}></i>
+          {summarizingUrls.has(article.url) ? (
+            <div className="nova-spinner"></div>
+          ) : (
+            <i className={cn("fa-solid fa-sparkles text-[10px]", summaries[article.url] ? "text-indigo-600" : "text-slate-300")}></i>
+          )}
           {summaries[article.url] ? 'Summarized' : 'AI Analysis'}
         </button>
       </div>
@@ -491,7 +509,11 @@ function NavItem({ icon, label, active, onClick }) {
         <i className={icon}></i>
       </div>
       <span>{label}</span>
-      {active && <div className="ml-auto w-1 h-1 rounded-full bg-white" />}
+      {active && (
+        <div className="ml-auto flex items-center gap-1">
+          <div className="w-1 h-1 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+        </div>
+      )}
     </button>
   );
 }

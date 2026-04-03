@@ -51,7 +51,8 @@ export default function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative font-sans">
       {/* Background Glow & Patterns */}
-      <div className="fixed inset-0 pointer-events-none flex justify-center items-center overflow-hidden z-0 bg-slate-50/50">
+      <div className="fixed inset-0 pointer-events-none flex justify-center items-center overflow-hidden z-0 bg-[#F9FAFB]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(99,102,241,0.15)_0,transparent_50%),radial-gradient(circle_at_100%_100%,rgba(59,130,246,0.15)_0,transparent_50%)]"></div>
         <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[600px] bg-indigo-200/20 rounded-full blur-[120px] animate-blob"></div>
         <div className="absolute top-[20%] right-[-10%] w-[600px] h-[500px] bg-blue-200/20 rounded-full blur-[100px] animate-blob" style={{ animationDelay: '2s' }}></div>
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
@@ -134,7 +135,7 @@ export default function Register() {
               disabled={isLoading}
               className="w-full h-9 mt-2 flex items-center justify-center gap-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800 transition-all focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-[0.98] disabled:opacity-80 disabled:cursor-not-allowed"
             >
-              {isLoading ? <div className="loader"></div> : <span>Create account</span>}
+              {isLoading ? <div className="loader-white"></div> : <span>Create account</span>}
             </button>
           </form>
         </div>

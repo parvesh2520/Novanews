@@ -195,35 +195,36 @@ export default function Dashboard() {
         <div className="absolute bottom-[10%] right-[10%] w-[800px] h-[800px] bg-blue-50/5 rounded-full blur-[150px]"></div>
       </div>
       {/* Sidebar Navigation */}
-      <aside className="fixed inset-y-0 left-0 w-64 bg-white/40 backdrop-blur-2xl border-r border-slate-200/50 hidden md:flex flex-col z-20">
-        <div className="h-20 flex items-center px-8">
-          <div className="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-indigo-500 rounded-xl flex items-center justify-center mr-3 shadow-md shadow-indigo-500/20">
-            <i className="fa-solid fa-bolt text-white text-sm"></i>
+      <aside className="fixed inset-y-0 left-0 w-[240px] bg-white border-r border-[#EAEAEA] hidden md:flex flex-col z-20">
+        <div className="h-[60px] flex items-center px-5 mt-2">
+          {/* Minimal Icon Logo */}
+          <div className="w-6 h-6 bg-slate-900 rounded-[5px] flex items-center justify-center mr-2.5 shadow-sm">
+            <i className="fa-solid fa-bolt text-white text-[10px]"></i>
           </div>
-          <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">NovaNews</span>
+          <span className="text-[15px] font-bold text-slate-900 tracking-tight">
+            NovaNews
+          </span>
         </div>
         
-        <div className="flex-1 overflow-y-auto py-4 px-4 scrollbar-hide">
-          <nav className="flex flex-col gap-1.5">
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-3 mt-2">Discover</div>
+        <div className="flex-1 overflow-y-auto py-2 px-3 scrollbar-hide">
+          <nav className="flex flex-col gap-[2px]">
+            <div className="text-[10px] font-semibold text-slate-400/80 uppercase tracking-[0.15em] mb-2 mt-4 px-3">Overview</div>
             <NavItem icon="fa-solid fa-house" label="Home" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-fire" label="Top Stories" active={selectedCategory === 'top'} onClick={() => { setSelectedCategory('top'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-bolt" label="Top Stories" active={selectedCategory === 'top'} onClick={() => { setSelectedCategory('top'); setSearchQuery(''); }} />
             <NavItem icon="fa-solid fa-bookmark" label="Saved" active={selectedCategory === 'saved'} onClick={() => { setSelectedCategory('saved'); setSearchQuery(''); }} />
             
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 mt-8 px-3">Categories</div>
+            <div className="text-[10px] font-semibold text-slate-400/80 uppercase tracking-[0.15em] mb-2 mt-6 px-3">Categories</div>
             <NavItem icon="fa-solid fa-microchip" label="Technology" active={selectedCategory === 'technology'} onClick={() => { setSelectedCategory('technology'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-briefcase" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-flask" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-basketball" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-chart-line" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-vial" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-trophy" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setSearchQuery(''); }} />
           </nav>
         </div>
 
-        <div className="p-4 mb-2">
-          <button onClick={handleLogout} className="flex items-center w-full gap-3 px-3 py-2.5 text-sm font-medium text-slate-500 rounded-xl hover:bg-white hover:text-red-500 hover:shadow-sm hover:ring-1 hover:ring-slate-200/50 transition-all group">
-            <div className="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-red-50 flex items-center justify-center transition-colors">
-              <i className="fa-solid fa-arrow-right-from-bracket text-slate-400 group-hover:text-red-500 text-[11px]"></i>
-            </div>
-            Sign out
+        <div className="p-3 mb-2 mt-auto border-t border-[#EAEAEA]/40">
+          <button onClick={handleLogout} className="flex items-center w-full gap-3 px-3 py-2 text-[13px] font-medium text-slate-500 rounded-md hover:bg-[#F9FAFB] hover:text-slate-900 transition-colors group">
+            <i className="fa-solid fa-arrow-right-from-bracket w-[18px] text-[14px] text-center text-slate-400 group-hover:text-slate-600"></i>
+            <span className="tracking-tight">Sign out</span>
           </button>
         </div>
       </aside>
@@ -254,9 +255,6 @@ export default function Dashboard() {
           </div>
 
           <div className="flex items-center gap-3 ml-auto">
-            <button className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors">
-              <i className="fa-regular fa-bell"></i>
-            </button>
             
             <div className="relative">
               <div 
@@ -285,12 +283,17 @@ export default function Dashboard() {
         </header>
 
         <div className="flex-1 p-8 lg:p-12 max-w-6xl mx-auto w-full">
-          {/* Hero Featured Story (Static) */}
-          {!isLoading && articles.length > 0 && selectedCategory === 'general' && !searchQuery && articles[featuredIndex] && (
-            <div 
-              key={featuredIndex}
-              className="mb-16 relative"
-            >
+          {/* Hero Featured Story (Animated) */}
+          <AnimatePresence mode="wait">
+            {!isLoading && articles.length > 0 && selectedCategory === 'general' && !searchQuery && articles[featuredIndex] && (
+              <motion.div 
+                key={featuredIndex}
+                initial={{ opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="mb-16 relative"
+              >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
                   <div className="order-2 lg:order-1">
                     <div className="flex items-center gap-3 mb-4">
@@ -351,8 +354,9 @@ export default function Dashboard() {
                     </p>
                   </motion.div>
                 )}
-            </div>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <div className="flex items-center gap-4 mb-8">
             <h2 className="text-xl font-bold text-slate-900">
@@ -418,19 +422,22 @@ export default function Dashboard() {
 // Sub-components
 function NewsCard({ article, index, savedUrls, toggleSaveArticle, summaries, summarizingUrls, handleSummarize }) {
   return (
-    <div
-      className="group flex flex-col h-full bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300"
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.4), ease: "easeOut" }}
+      className="group flex flex-col h-full bg-white border border-[#EAEAEA] rounded-xl p-4 shadow-sm hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 relative"
     >
       <div className="w-full aspect-[16/10] rounded-lg overflow-hidden mb-5 relative bg-slate-100 ring-1 ring-slate-900/5 shadow-inner">
         <img 
           src={article.urlToImage} 
           alt={article.title} 
-          className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.03]"
+          className="w-full h-full object-cover grayscale-[15%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.05]"
         />
         <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-colors pointer-events-none" />
         <button 
           onClick={(e) => toggleSaveArticle(e, article)}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:scale-105 active:scale-95 transition-all z-20 shadow-sm"
+          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md border border-white/20 flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:scale-110 active:scale-95 transition-all z-20 shadow-sm"
         >
           <i className={savedUrls.has(article.url) ? "fa-solid fa-bookmark text-indigo-600" : "fa-regular fa-bookmark"}></i>
         </button>
@@ -463,7 +470,7 @@ function NewsCard({ article, index, savedUrls, toggleSaveArticle, summaries, sum
           href={article.url} 
           target="_blank" 
           rel="noreferrer" 
-          className="text-xs font-bold text-slate-400 group-hover:text-indigo-600 transition-colors flex items-center gap-1.5"
+          className="text-[11px] font-semibold text-slate-400 group-hover:text-indigo-600 transition-colors flex items-center gap-1.5"
         >
           Read Report <i className="fa-solid fa-arrow-right text-[9px] translate-x-0 group-hover:translate-x-0.5 transition-transform"></i>
         </a>
@@ -481,7 +488,7 @@ function NewsCard({ article, index, savedUrls, toggleSaveArticle, summaries, sum
           {summaries[article.url] ? 'Summarized' : 'AI Analysis'}
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -491,8 +498,8 @@ function MobileNavItem({ icon, label, active, onClick }) {
       "flex flex-col items-center gap-1 p-1 transition-colors",
       active ? "text-slate-900" : "text-slate-400 hover:text-slate-600"
     )}>
-       <i className={cn(icon, "text-lg")}></i>
-       <span className="text-[9px] font-bold uppercase tracking-wider">{label}</span>
+       <i className={cn(icon, "text-[15px]")}></i>
+       <span className="text-[10px] font-medium tracking-tight">{label}</span>
     </button>
   );
 }
@@ -502,21 +509,16 @@ function NavItem({ icon, label, active, onClick }) {
     <button 
       onClick={(e) => { e.preventDefault(); onClick(); }} 
       className={cn(
-        "group flex items-center w-full gap-3 px-3 py-2 text-sm font-medium rounded-xl transition-all duration-200",
+        "group flex items-center w-full gap-3 px-3 py-[7px] text-[13px] rounded-md transition-all duration-200",
         active 
-          ? "bg-white text-indigo-600 shadow-sm ring-1 ring-slate-200/50" 
-          : "text-slate-500 hover:bg-white hover:text-slate-900 hover:shadow-sm hover:ring-1 hover:ring-slate-200/50"
+          ? "bg-[#F4F4F5] text-slate-900 font-semibold" 
+          : "text-slate-500 font-medium hover:bg-[#FAFAFA] hover:text-slate-900"
       )}
     >
-      <div className={cn(
-        "w-7 h-7 flex justify-center items-center rounded-lg transition-colors", 
-        active ? "bg-indigo-50 text-indigo-600" : "bg-slate-100 text-slate-400 group-hover:bg-slate-50 group-hover:text-slate-500"
-      )}>
-        <i className={cn(icon, "text-[11px]")}></i>
-      </div>
-      <span>{label}</span>
+      <i className={cn(icon, "w-[18px] text-center text-[13px]", active ? "text-slate-900" : "text-slate-400 group-hover:text-slate-500")}></i>
+      <span className="tracking-tight">{label}</span>
       {active && (
-        <div className="ml-auto w-1 h-4 bg-indigo-500 rounded-full" />
+         <div className="ml-auto w-[3px] h-3.5 bg-slate-800 rounded-full shadow-sm" />
       )}
     </button>
   );

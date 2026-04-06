@@ -6,10 +6,12 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingProvider, setLoadingProvider] = useState(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   
   const handleSocialLogin = async (provider) => {
+    setLoadingProvider(provider);
     try {
       const origin = encodeURIComponent(window.location.origin);
       const res = await axios.get(`/auth/authorize/${provider}?origin=${origin}`);
@@ -18,6 +20,7 @@ export default function Login() {
       }
     } catch (err) {
       setError(`Failed to initiate ${provider} login`);
+      setLoadingProvider(null);
     }
   };
 
@@ -80,17 +83,27 @@ export default function Login() {
             <button 
               type="button" 
               onClick={() => handleSocialLogin('github')}
-              className="group flex-1 flex items-center justify-center gap-2 h-9 bg-white border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
+              disabled={loadingProvider !== null || isLoading}
+              className="group flex-1 flex items-center justify-center gap-2 h-9 bg-white border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              <i className="fa-brands fa-github text-[15px] group-hover:scale-110 transition-transform"></i>
+              {loadingProvider === 'github' ? (
+                <div className="w-4 h-4 border-[2px] border-gray-300 border-t-gray-500 rounded-full animate-spin"></div>
+              ) : (
+                <i className="fa-brands fa-github text-[15px] group-hover:scale-110 transition-transform"></i>
+              )}
               GitHub
             </button>
             <button 
               type="button" 
               onClick={() => handleSocialLogin('google')}
-              className="group flex-1 flex items-center justify-center gap-2 h-9 bg-white border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
+              disabled={loadingProvider !== null || isLoading}
+              className="group flex-1 flex items-center justify-center gap-2 h-9 bg-white border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-4 h-4 group-hover:scale-110 transition-transform" alt="Google" />
+              {loadingProvider === 'google' ? (
+                <div className="w-4 h-4 border-[2px] border-gray-300 border-t-gray-500 rounded-full animate-spin"></div>
+              ) : (
+                <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-4 h-4 group-hover:scale-110 transition-transform" alt="Google" />
+              )}
               Google
             </button>
           </div>

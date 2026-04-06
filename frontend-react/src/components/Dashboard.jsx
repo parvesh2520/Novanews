@@ -406,10 +406,20 @@ export default function Dashboard() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
             <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} className="relative w-72 h-full bg-white shadow-xl flex flex-col p-8">
                 <nav className="flex flex-col gap-2">
+                  <div className="text-[10px] font-semibold text-slate-400/80 uppercase tracking-[0.15em] mb-2 px-3">Overview</div>
+                  <NavItem icon="fa-solid fa-bolt" label="Top Stories" active={selectedCategory === 'top'} onClick={() => { setSelectedCategory('top'); setIsMobileMenuOpen(false); }} />
+                  
+                  <div className="text-[10px] font-semibold text-slate-400/80 uppercase tracking-[0.15em] mb-2 mt-4 px-3">Categories</div>
                   <NavItem icon="fa-solid fa-microchip" label="Technology" active={selectedCategory === 'technology'} onClick={() => { setSelectedCategory('technology'); setIsMobileMenuOpen(false); }} />
                   <NavItem icon="fa-solid fa-chart-line" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setIsMobileMenuOpen(false); }} />
-                  <div className="h-px bg-slate-100 my-4"></div>
-                  <button onClick={handleLogout} className="text-sm font-bold text-red-500 px-4 py-2 text-left">Sign out</button>
+                  <NavItem icon="fa-solid fa-vial" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setIsMobileMenuOpen(false); }} />
+                  <NavItem icon="fa-solid fa-trophy" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setIsMobileMenuOpen(false); }} />
+                  
+                  <div className="mt-auto h-px bg-slate-100 my-4"></div>
+                  <button onClick={handleLogout} className="flex items-center w-full gap-3 px-4 py-2 text-[14px] font-medium text-red-500 rounded-md hover:bg-red-50 transition-colors group">
+                     <i className="fa-solid fa-arrow-right-from-bracket w-[18px] text-center"></i>
+                     <span className="tracking-tight">Sign out</span>
+                  </button>
                 </nav>
             </motion.div>
           </div>

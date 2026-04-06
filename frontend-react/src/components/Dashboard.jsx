@@ -195,32 +195,34 @@ export default function Dashboard() {
         <div className="absolute bottom-[10%] right-[10%] w-[800px] h-[800px] bg-blue-50/5 rounded-full blur-[150px]"></div>
       </div>
       {/* Sidebar Navigation */}
-      <aside className="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 hidden md:flex flex-col z-20">
-        <div className="h-16 flex items-center px-8 border-b border-slate-100">
-          <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center mr-3">
-            <span className="text-white font-bold text-sm">N</span>
+      <aside className="fixed inset-y-0 left-0 w-64 bg-white/40 backdrop-blur-2xl border-r border-slate-200/50 hidden md:flex flex-col z-20">
+        <div className="h-20 flex items-center px-8">
+          <div className="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-indigo-500 rounded-xl flex items-center justify-center mr-3 shadow-md shadow-indigo-500/20">
+            <i className="fa-solid fa-bolt text-white text-sm"></i>
           </div>
-          <span className="text-lg font-bold text-slate-900 tracking-tight">NovaNews</span>
+          <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">NovaNews</span>
         </div>
         
-        <div className="flex-1 overflow-y-auto py-6 px-4">
-          <nav className="flex flex-col gap-1">
-            <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 px-4">Discover</div>
+        <div className="flex-1 overflow-y-auto py-4 px-4 scrollbar-hide">
+          <nav className="flex flex-col gap-1.5">
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-3 mt-2">Discover</div>
             <NavItem icon="fa-solid fa-house" label="Home" active={selectedCategory === 'general'} onClick={() => { setSelectedCategory('general'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-bolt" label="Top Stories" active={selectedCategory === 'top'} onClick={() => { setSelectedCategory('top'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-fire" label="Top Stories" active={selectedCategory === 'top'} onClick={() => { setSelectedCategory('top'); setSearchQuery(''); }} />
             <NavItem icon="fa-solid fa-bookmark" label="Saved" active={selectedCategory === 'saved'} onClick={() => { setSelectedCategory('saved'); setSearchQuery(''); }} />
             
-            <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-4">Categories</div>
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 mt-8 px-3">Categories</div>
             <NavItem icon="fa-solid fa-microchip" label="Technology" active={selectedCategory === 'technology'} onClick={() => { setSelectedCategory('technology'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-chart-line" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-vial" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setSearchQuery(''); }} />
-            <NavItem icon="fa-solid fa-trophy" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-briefcase" label="Business" active={selectedCategory === 'business'} onClick={() => { setSelectedCategory('business'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-flask" label="Science" active={selectedCategory === 'science'} onClick={() => { setSelectedCategory('science'); setSearchQuery(''); }} />
+            <NavItem icon="fa-solid fa-basketball" label="Sports" active={selectedCategory === 'sports'} onClick={() => { setSelectedCategory('sports'); setSearchQuery(''); }} />
           </nav>
         </div>
 
-        <div className="p-4 border-t border-slate-100">
-          <button onClick={handleLogout} className="flex items-center w-full gap-3 px-4 py-2.5 text-sm font-medium text-slate-500 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors group">
-            <i className="fa-solid fa-arrow-right-from-bracket text-slate-400 group-hover:text-slate-600"></i>
+        <div className="p-4 mb-2">
+          <button onClick={handleLogout} className="flex items-center w-full gap-3 px-3 py-2.5 text-sm font-medium text-slate-500 rounded-xl hover:bg-white hover:text-red-500 hover:shadow-sm hover:ring-1 hover:ring-slate-200/50 transition-all group">
+            <div className="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-red-50 flex items-center justify-center transition-colors">
+              <i className="fa-solid fa-arrow-right-from-bracket text-slate-400 group-hover:text-red-500 text-[11px]"></i>
+            </div>
             Sign out
           </button>
         </div>
@@ -500,20 +502,21 @@ function NavItem({ icon, label, active, onClick }) {
     <button 
       onClick={(e) => { e.preventDefault(); onClick(); }} 
       className={cn(
-        "flex items-center w-full gap-3 px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+        "group flex items-center w-full gap-3 px-3 py-2 text-sm font-medium rounded-xl transition-all duration-200",
         active 
-          ? "bg-slate-900 text-white" 
-          : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+          ? "bg-white text-indigo-600 shadow-sm ring-1 ring-slate-200/50" 
+          : "text-slate-500 hover:bg-white hover:text-slate-900 hover:shadow-sm hover:ring-1 hover:ring-slate-200/50"
       )}
     >
-      <div className={cn("w-5 flex justify-center text-base", active ? "text-white" : "text-slate-400")}>
-        <i className={icon}></i>
+      <div className={cn(
+        "w-7 h-7 flex justify-center items-center rounded-lg transition-colors", 
+        active ? "bg-indigo-50 text-indigo-600" : "bg-slate-100 text-slate-400 group-hover:bg-slate-50 group-hover:text-slate-500"
+      )}>
+        <i className={cn(icon, "text-[11px]")}></i>
       </div>
       <span>{label}</span>
       {active && (
-        <div className="ml-auto flex items-center gap-1">
-          <div className="w-1 h-1 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-        </div>
+        <div className="ml-auto w-1 h-4 bg-indigo-500 rounded-full" />
       )}
     </button>
   );

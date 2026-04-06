@@ -92,9 +92,8 @@ def authorize(provider):
     try:
         # provider is 'google' or 'github'
         # redirectTo should be the frontend callback route
-        # Dynamically determine the redirect URI based on the request origin
-        # This allows the same code to work on Localhost and Vercel
-        origin = request.headers.get('Origin') or 'http://localhost:5173'
+        # Dynamically determine the redirect URI based on explicit query param or request origin
+        origin = request.args.get('origin') or request.headers.get('Origin') or 'http://localhost:5173'
         redirect_uri = f"{origin}/social-callback"
 
         res = supabase.auth.sign_in_with_oauth({

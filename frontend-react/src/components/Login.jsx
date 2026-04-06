@@ -11,7 +11,8 @@ export default function Login() {
   
   const handleSocialLogin = async (provider) => {
     try {
-      const res = await axios.get(`/auth/authorize/${provider}`);
+      const origin = encodeURIComponent(window.location.origin);
+      const res = await axios.get(`/auth/authorize/${provider}?origin=${origin}`);
       if (res.data.status === 'success' && res.data.url) {
         window.location.href = res.data.url;
       }

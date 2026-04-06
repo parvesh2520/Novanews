@@ -57,7 +57,42 @@ python app.py
 ```
 The backend should now be running on `http://127.0.0.1:5000`.
 
-### 3. Frontend Setup
+### 3. Database Setup (Supabase / PostgreSQL)
+If you are setting up your own database, you must create the necessary tables. You can run the following SQL queries directly in the Supabase SQL Editor (or your local PostgreSQL CLI):
+
+```sql
+-- 1. Enable UUID generation (usually active by default in Supabase)
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- 2. Create the `users` table
+CREATE TABLE IF NOT EXISTS public.users (
+    id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL
+);
+
+-- 3. Create the `saved_articles` table for the bookmarking feature
+CREATE TABLE IF NOT EXISTS public.saved_articles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    url TEXT NOT NULL,
+    title TEXT,
+    description TEXT,
+    url_to_image TEXT,
+    author TEXT,
+    source_name TEXT,
+    published_at TEXT,
+    category TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    UNIQUE(user_id, url)
+);
+
+-- Optional: Disable Row Level Security (RLS) if resolving permission issues
+ALTER TABLE public.users DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.saved_articles DISABLE ROW LEVEL SECURITY;
+```
+
+### 4. Frontend Setup
 Open a new terminal, navigate to the frontend directory:
 ```bash
 cd frontend-react
